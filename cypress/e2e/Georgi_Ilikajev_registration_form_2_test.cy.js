@@ -9,30 +9,71 @@ Assignement 4: add content to the following tests
 describe('Section 1: Functional tests', () => {
 
     it('User can use only same both first and validation passwords', ()=>{
-        // Add test steps for filling in only mandatory fields
-        // Type confirmation password which is different from first password
-        // Assert that submit button is not enabled
-        // Assert that successful message is not visible
-        // Assert that error message is visible
+        cy.get('#username').type('JJBro')
+        cy.get('#email').type('wtfisgoingon@gmail.com')
+        cy.get('input[data-cy="name"]').type('Georgi')
+        cy.get('#lastName').type('Ilikajev')
+        cy.get('[data-testid="phoneNumberTestId"]').type('123123')
+        cy.get('[name="password"]').type('159487')
+        cy.get('[name="confirm"]').type('159487')
+        cy.get('body').click(10, 10);
+        cy.get('#password_error_message').should('not.be.visible')
+        cy.get('.submit_button').should('be.enabled')
+      
+      
+        // I follow the stages of LMS assignment, so in the beginning this test was checking if error message is shown when passwords don't match.
+        // Now it is changed according to LMS, but it will ne similar with some others. I hope it's OK and i understood assignment correctly.
     })
     
     it('User can submit form with all fields added', ()=>{
+        cy.get('#username').type('JJBro')
+        cy.get('#email').type('wtfisgoingon@gmail.com')
+        cy.get('input[data-cy="name"]').type('Georgi')
+        cy.get('#lastName').type('Ilikajev')
+        cy.get('[data-testid="phoneNumberTestId"]').type('123123')
+        cy.get('[name="password"]').type('159487')
+        cy.get('[name="confirm"]').type('159487')
+        cy.get('body').click(10, 10);
+        cy.get('#password_error_message').should('not.be.visible')
+        cy.get('.submit_button').should('be.enabled')
+        cy.get('.submit_button').click()
+        cy.get('#success_message').should('be.visible')
+        
         // Add test steps for filling in ALL fields
         // Assert that submit button is enabled
         // Assert that after submitting the form system show successful message
     })
 
     it('User can submit form with valid data and only mandatory fields added', ()=>{
-        // Add test steps for filling in ONLY mandatory fields
-        // Assert that submit button is enabled
-        // Assert that after submitting the form system shows successful message
+        cy.get('#username').type('JJBro')
+        cy.get('#email').type('wtfisgoingon@gmail.com')
+        cy.get('input[data-cy="name"]').type('Georgi')
+        cy.get('#lastName').type('Ilikajev')
+        cy.get('[data-testid="phoneNumberTestId"]').type('123123')
+        cy.get('[name="password"]').type('159487')
+        cy.get('[name="confirm"]').type('159487')
+        cy.get('body').click(10, 10);
+        cy.get('#password_error_message').should('not.be.visible')
+        cy.get('.submit_button').should('be.enabled')
+        cy.get('.submit_button').click()
+        cy.get('#success_message').should('be.visible')
     })
 
-    it('Input valid data to the page', () => {
-        inputValidData('john.doe')
-    })
 
-    // You can add more similar tests for checking other mandatory field's absence
+        // Clear one of the fields to check if possible to submit registration without it
+
+        it('User cannot submit without all mandatory fields filled it', ()=>{
+        cy.get('#username').clear()
+        cy.get('#email').type('wtfisgoingon@gmail.com')
+        cy.get('input[data-cy="name"]').type('Georgi')
+        cy.get('#lastName').type('Ilikajev')
+        cy.get('[data-testid="phoneNumberTestId"]').type('123123')
+        cy.get('[name="password"]').type('159487')
+        cy.get('[name="confirm"]').type('159487')
+        cy.get('body').click(10, 10);
+        cy.get('.submit_button').should('be.disabled')
+
+        })
 
 })
 
