@@ -84,13 +84,19 @@ Assignement 5: create more visual tests
 describe('Section 2: Visual tests', () => {
     it('Check that logo is correct and has correct size', () => {
         cy.log('Will check logo source and size')
-        cy.get('img').should('have.attr', 'src').should('include', 'cerebrum_hub_logo')
+        cy.get('#logo').invoke('css', 'height').should('eq', '178px')
         // get element and check its parameter height, to be equal 178
-        cy.get('img').invoke('height').should('be.lessThan', 178)
-            .and('be.greaterThan', 100)
+        
     })
 
     // Create similar test for checking second picture
+    
+    it('Check that second picture is correct and has correct size', () => {
+        cy.log('Will check logo source and size')
+        cy.get('[data-cy=cypress_logo]').invoke('css', 'height').should('eq', '178px')
+        
+    })
+    
 
     it('Check navigation part', () => {
         cy.get('nav').children().should('have.length', 2)
@@ -114,6 +120,21 @@ describe('Section 2: Visual tests', () => {
     // Create similar test for checking second link to Cerebrum Hub homepage
     // Check that URL to Cerebrum Hub page is correct and clickable
 
+    it('Check navigation part 2', () => {
+        
+        // Get navigation element (2), find its first child, check the link content and click it
+        cy.get('nav').children().eq(1).should('be.visible')
+            .and('have.attr', 'href', 'https://cerebrumhub.com/')
+            .click()
+        
+        // Check that currently opened URL is correct
+        cy.url().should('contain', 'https://cerebrumhub.com/')
+        
+        // Go back to previous page
+        cy.go('back')
+        cy.log('Back again in registration form 2')
+    })
+
     it('Check that radio button list is correct', () => {
         // Array of found elements with given selector has 4 elements in total
         cy.get('input[type="radio"]').should('have.length', 4)
@@ -129,6 +150,21 @@ describe('Section 2: Visual tests', () => {
     })
 
     // Create test similar to previous one
+
+    it('Check that radio button list is correct', () => {
+        // Array of found elements with given selector has 4 elements in total
+        cy.get('.checkbox.vehicles').should('have.length', 3)
+        cy.get('#vehicle1').next().eq(0).should('have.text','I have a bike').and('not.be.checked')
+        cy.get('#vehicle2').next().eq(0).should('have.text','I have a car').and('not.be.checked')
+        cy.get('#vehicle3').next().eq(0).should('have.text','I have a boat').and('not.be.checked')
+
+        cy.get('#vehicle1').click()
+        cy.get('#vehicle1').should('be.checked')
+        cy.get('#vehicle2').click()
+        cy.get('#vehicle2').should('be.checked')
+        cy.get('#vehicle1').should('be.checked')
+    })
+
 
     it('Car dropdown is correct', () => {
         // Here is an example how to explicitely create screenshot from the code
@@ -153,6 +189,21 @@ describe('Section 2: Visual tests', () => {
 
 
     // Create test similar to previous one
+
+    it('Animal dropdown is correct', () => {
+        cy.get('#animal').select(1).screenshot('Animals drop-down')
+        cy.screenshot('Full page screenshot')
+        cy.get('#animal').find('option').should('have.length', 6)
+        
+
+        //Checking, if text is similar to the requirements - using different approach from "values", since they are messy.
+        const expectedOptions = ['Dog', 'Cat', 'Snake', 'Hippo', 'Cow', 'Horse'];
+        cy.get('#animal > option').then(($options) => {
+        const actualOptions = $options.map((index, option) => Cypress.$(option).text()).get();
+        expect(actualOptions).to.deep.eq(expectedOptions);
+    })
+    })
+
 
 })
 
